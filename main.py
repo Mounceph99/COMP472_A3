@@ -11,6 +11,9 @@ class Statistics:
         # used to calculate average effective branching factor (i.e., the average number of successors that are not pruned)
         # it will be equal to sum(branching_factors) / len(branching_factors)
         self.__branching_factors = []
+
+        # store the time this object has been created to calculate execution time
+        self.__start_time = time.time()
     
     def get_statistics(self):
         """
@@ -19,8 +22,9 @@ class Statistics:
         """
 
         avg_branching_factor = 0 if len(self.__branching_factors) == 0 else sum(self.__branching_factors)/len(self.__branching_factors)
+        execution_time = time.time() - self.__start_time
 
-        return self.__num_nodes_visited, self.__num_nodes_evaluated, self.__max_depth_reached, avg_branching_factor
+        return self.__num_nodes_visited, self.__num_nodes_evaluated, self.__max_depth_reached, avg_branching_factor, execution_time
     
     def increment_num_nodes_visited(self):
         """
@@ -275,9 +279,6 @@ def min_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
     return v, best_move
 
 if __name__ == '__main__':
-
-    start_time = time.time()
-
     ######## Get passed info (#tokens, #taken_tokens, list_of_taken_tokens (and last move), depth) ########
     n_tokens = int(sys.argv[1])
     n_taken_tokens = int(sys.argv[2])
@@ -294,7 +295,7 @@ if __name__ == '__main__':
     last_move = None if n_taken_tokens == 0 else int(sys.argv[-2])
 
     # Perform minimax with alpha-beta pruning to find best move
-    best_move, best_move_value, num_nodes_visited, num_nodes_evaluated, max_depth_reached, avg_branching_factor \
+    best_move, best_move_value, num_nodes_visited, num_nodes_evaluated, max_depth_reached, avg_branching_factor, execution_time \
         = alpha_beta_search(n_tokens, n_taken_tokens, taken_tokens, last_move, depth)
     
     # Print results
@@ -305,4 +306,4 @@ if __name__ == '__main__':
     print('Max Depth Reached: {}'.format(max_depth_reached))
     print('Avg Effective Branching Factor: {:.1f}'.format(avg_branching_factor))
     print()
-    print('Execution time: {} s'.format(time.time() - start_time))
+    print('Execution time: {} s'.format(execution_time))
