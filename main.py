@@ -1,4 +1,5 @@
 import sys
+import time
 
 # Class that stores the statistics of the alpha-beta pruning algorithm ran
 class Statistics:
@@ -274,6 +275,9 @@ def min_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
     return v, best_move
 
 if __name__ == '__main__':
+
+    start_time = time.time()
+
     ######## Get passed info (#tokens, #taken_tokens, list_of_taken_tokens (and last move), depth) ########
     n_tokens = int(sys.argv[1])
     n_taken_tokens = int(sys.argv[2])
@@ -300,3 +304,5 @@ if __name__ == '__main__':
     print('Number of Nodes Evaluated: {}'.format(num_nodes_evaluated))
     print('Max Depth Reached: {}'.format(max_depth_reached))
     print('Avg Effective Branching Factor: {:.1f}'.format(avg_branching_factor))
+    print()
+    print('Execution time: {} s'.format(time.time() - start_time))
