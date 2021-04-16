@@ -169,6 +169,7 @@ def heuristic(last_move, taken_tokens, next_possible_moves, is_max_player_turn):
                                 count += 1
                         # break, we have found largest prime that divides last_move
                         break
+                candidate -=1
             result = 0.6 if count%2 != 0 else -0.6
 
     # return result. negate result if it is not max player's turn
@@ -202,7 +203,7 @@ def alpha_beta_search(n_tokens, n_taken_tokens, taken_tokens, last_move, max_dep
 def max_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_depth, alpha, beta, statistics):
     statistics.set_max_depth_reached(depth)
     statistics.increment_num_nodes_visited()
-
+    
     next_possible_moves = get_possible_moves(n_tokens, n_taken_tokens, taken_tokens, last_move)
     if len(next_possible_moves) == 0 or (max_depth != 0 and depth == max_depth):
         # if terminal state or we reached max_depth
@@ -242,7 +243,7 @@ def max_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
 def min_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_depth, alpha, beta, statistics):
     statistics.set_max_depth_reached(depth)
     statistics.increment_num_nodes_visited()
-
+    
     next_possible_moves = get_possible_moves(n_tokens, n_taken_tokens, taken_tokens, last_move)
     if len(next_possible_moves) == 0 or (max_depth != 0 and depth == max_depth):
         # if terminal state or we reached max_depth
@@ -257,7 +258,7 @@ def min_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
     for move in next_possible_moves:
         # take token
         taken_tokens[move] = True
-
+        
         v2, move2 = max_value(n_tokens, n_taken_tokens + 1, taken_tokens, move, depth + 1, max_depth, alpha, beta, statistics)
 
         total_branches_visited += 1
