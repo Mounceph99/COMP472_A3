@@ -8,10 +8,6 @@ class Statistics:
         self.__num_nodes_evaluated = 0 # (either an end game state or the specified depth is reached)
         self.__max_depth_reached = 0
 
-        # used to calculate average effective branching factor (i.e., the average number of successors that are not pruned)
-        # it will be equal to sum(branching_factors) / len(branching_factors)
-        self.__branching_factors = []
-
         # store the time this object has been created to calculate execution time
         self.__start_time = time.time()
     
@@ -21,7 +17,10 @@ class Statistics:
         of a particular execution of minimax with alpha-beta pruning.
         """
 
-        avg_branching_factor = 0 if len(self.__branching_factors) == 0 else sum(self.__branching_factors)/len(self.__branching_factors)
+        # avg_branching_factor is average number of branches per parent node
+        # number of branches is simply __num_nodes_visited - 1
+        # number of parent nodes is __num_nodes_visited - __num_nodes_evaluated
+        avg_branching_factor = (self.__num_nodes_visited - 1) / (self.__num_nodes_visited - self.__num_nodes_evaluated)
         execution_time = time.time() - self.__start_time
 
         return self.__num_nodes_visited, self.__num_nodes_evaluated, self.__max_depth_reached, avg_branching_factor, execution_time
@@ -46,13 +45,6 @@ class Statistics:
         """
 
         self.__max_depth_reached = max(self.__max_depth_reached, depth)
-    
-    def add_branching_factor(self, branching_factor):
-        """
-        Add branching factor to list of branching factors.
-        """
-
-        self.__branching_factors.append(branching_factor)
 
 
 
@@ -236,7 +228,6 @@ def max_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
         if v >= beta:
             break
 
-    statistics.add_branching_factor(total_branches_visited)
     return v, best_move
 
 
@@ -276,7 +267,6 @@ def min_value(n_tokens, n_taken_tokens, taken_tokens, last_move, depth, max_dept
         if v <= alpha:
             break
     
-    statistics.add_branching_factor(total_branches_visited)
     return v, best_move
 
 if __name__ == '__main__':

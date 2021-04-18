@@ -1,0 +1,4 @@
+input 4:
+    TakeTokens 8 3 3 1 2 0 
+input 5:
+    TakeTokens 10 5 3 1 8 4 2 0  
