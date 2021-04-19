@@ -20,7 +20,13 @@ class Statistics:
         # avg_branching_factor is average number of branches per parent node
         # number of branches is simply __num_nodes_visited - 1
         # number of parent nodes is __num_nodes_visited - __num_nodes_evaluated
-        avg_branching_factor = (self.__num_nodes_visited - 1) / (self.__num_nodes_visited - self.__num_nodes_evaluated)
+        denumerator = (self.__num_nodes_visited - self.__num_nodes_evaluated)
+        
+        if (denumerator != 0):
+            avg_branching_factor = (self.__num_nodes_visited - 1) / denumerator
+        else:
+            avg_branching_factor = 0
+
         execution_time = time.time() - self.__start_time
 
         return self.__num_nodes_visited, self.__num_nodes_evaluated, self.__max_depth_reached, avg_branching_factor, execution_time
